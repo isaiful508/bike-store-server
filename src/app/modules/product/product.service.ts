@@ -24,8 +24,38 @@ const getAllProducts = async (searchTerm?: string) => {
     return products;
 };
 
+// Get a specific product by ID
+const getProductById = async (productId: string) => {
+
+    const product = await ProductModel.findById(productId);
+    
+    return product;
+};
+
+// Update a product
+const updateProduct = async (productId: string, updates: Partial<Product>) => {
+
+    const updatedProduct = await ProductModel.findByIdAndUpdate(productId, updates, {
+        new: true,
+    });
+
+    return updatedProduct;
+
+};
+
+// Delete a product
+const deleteProduct = async (productId: string) => {
+
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+    return deletedProduct;
+
+};
+
 export const ProductServices = {
     createProductIntoDB,
-    getAllProducts
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct
 
 }
