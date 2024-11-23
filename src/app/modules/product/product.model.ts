@@ -27,7 +27,11 @@ const productSchema = new Schema<Product>( {
       default: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false
+  },
+  
 )
 
 
