@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 import { ProductRoutes } from './app/modules/product/product.route'
 import { OrderRoutes } from './app/modules/order/order.route'
-import errorMiddleware from './app/middlewares/errorMiddleware'
+import errorMiddleware from './app/middlewares/errorMIddleware'
 
 const app : Application = express()
 

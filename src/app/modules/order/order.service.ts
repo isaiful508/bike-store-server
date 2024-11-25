@@ -6,9 +6,6 @@ import OrderModel from './order.model';
 const createOrder = async (orderDetails: Order) => {
 
   const { email, product, quantity, totalPrice } = orderDetails;
-  console.log({ orderDetails });
-
-
 
   // Fetch the product
   const productData = await ProductModel.findById(product);
@@ -53,6 +50,7 @@ const calculateRevenue = async () => {
 
     return revenue.length > 0 ? revenue[0].totalRevenue : 0;
   } catch (error) {
+    // eslint-disable-next-line
     console.error('Error calculating revenue:', error);
     throw new Error('Failed to calculate revenue');
   }
