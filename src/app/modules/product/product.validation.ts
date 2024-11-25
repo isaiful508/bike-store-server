@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// Define the Zod schema for product validation
 export const productValidationSchema = z.object({
     name: z
       .string()
