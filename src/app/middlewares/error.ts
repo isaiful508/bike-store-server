@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 import {Request, Response, NextFunction  } from 'express';
 
 // eslint-disable-next-line
-const errorMiddleware  = (err: any, req: Request, res: Response, next: NextFunction) => {
+const error  = (err: any, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ZodError) {
 
     //format error
@@ -43,7 +43,7 @@ const errorMiddleware  = (err: any, req: Request, res: Response, next: NextFunct
   });
 };
 
-export default errorMiddleware;
+export default error;
 
 
 

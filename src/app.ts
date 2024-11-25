@@ -2,7 +2,9 @@ import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 import { ProductRoutes } from './app/modules/product/product.route'
 import { OrderRoutes } from './app/modules/order/order.route'
-import errorMiddleware from './app/middlewares/errorMIddleware'
+import error from './app/middlewares/error'
+
+
 
 const app : Application = express()
 
@@ -13,7 +15,7 @@ app.use(cors())
 //application routes
 app.use('/api', ProductRoutes);
 app.use('/api', OrderRoutes);
-app.use(errorMiddleware);
+app.use(error);
 
 
 app.get('/', (req : Request, res: Response) => {
