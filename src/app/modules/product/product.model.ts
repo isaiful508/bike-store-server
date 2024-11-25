@@ -8,9 +8,20 @@ const productSchema = new Schema<Product>( {
       required: true,
       trim: true,
     },
+    brand : {
+      type : String,
+      required : true,
+      trim: true
+    },
     category: {
       type: String,
+      enum: ["Mountain", "Road", "Hybrid", "Electric"],
       required: true,
+    },
+    description : {
+      type : String,
+      required : true,
+      trim: true
     },
     price: {
       type: Number,
@@ -25,6 +36,7 @@ const productSchema = new Schema<Product>( {
     inStock: {
       type: Boolean,
       default: true,
+      required: true,
     },
   },
   {
