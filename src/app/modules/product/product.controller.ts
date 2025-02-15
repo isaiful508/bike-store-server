@@ -22,12 +22,24 @@ const createProduct = async (req: Request, res: Response, next: NextFunction) =>
 // Get all Products
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const searchTerm = req.query.searchTerm as string;
+    const searchTerm = req.query.searchTerm as string | undefined;
+    const minPrice = req.query.minPrice ? Number(req.query.minPrice) : undefined;
+    const maxPrice = req.query.maxPrice ? Number(req.query.maxPrice) : undefined;
+    const brand = req.query.brand as string | undefined;
+    const category = req.query.category as string | undefined;
+    const inStock = req.query.inStock ? req.query.inStock === "true" : undefined;
 
-    const products = await ProductServices.getAllProducts(searchTerm);
+    const products = await ProductServices.getAllProducts({
+      searchTerm,
+      minPrice,
+      maxPrice,
+      brand,
+      category,
+      inStock,
+    });
 
     res.status(200).json({
-      message: 'Products retrieved successfully',
+      message: "Products retrieved successfully",
       success: true,
       data: products,
     });

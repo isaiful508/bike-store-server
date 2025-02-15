@@ -8,16 +8,40 @@ const createProductIntoDB = async (product: Product) => {
 }
 
 //get all products
-const getAllProducts = async (searchTerm?: string) => {
-    let query = {};
+const getAllProducts = async ( { searchTerm, minPrice, maxPrice, brand, category, inStock }: {
+    searchTerm?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    brand?: string;
+    category?: string;
+    inStock?: boolean;
+} ) => {
+    let query: any = {};
+   
     if (searchTerm) {
-        query = {
-            $or: [
-                { name: new RegExp(searchTerm, "i") },
-                { brand: new RegExp(searchTerm, "i") },
-                { category: new RegExp(searchTerm, "i") },
-            ],
-        };
+        query.$or = [
+            { name: new RegExp(searchTerm, 'i') },
+            { brand: new RegExp(searchTerm, 'i') },
+            { category: new RegExp(searchTerm, 'i') },
+        ];
+    }
+
+    if (minPrice || maxPrice) {
+        query.price = {};
+        if (minPrice) query.price.$gte = minPrice;
+        if (maxPrice) query.price.$lte = maxPrice;
+    }
+
+    if (brand) {
+        query.brand = new RegExp(brand, 'i');
+    }
+
+    if (category) {
+        query.category = new RegExp(category, 'i');
+    }
+
+    if (inStock !== undefined) {
+        query.inStock = inStock;
     }
 
     const products = await ProductModel.find(query);
