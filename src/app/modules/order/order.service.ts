@@ -1,13 +1,22 @@
 import ProductModel from "../product/product.model";
+import { User } from "../user/user.model";
 import { IOrder } from "./order.interface";
 import OrderModel from './order.model';
+import { orderUtils } from "./order.utils";
 
 
-const createOrder = async (orderDetails: IOrder) => {
-  const { user , products } = orderDetails;
+const createOrder = async (orderDetails: IOrder, client_ip: string) => {
+  const { user: userId, products } = orderDetails;
+
 
   if (!products || !products.length) {
     throw new Error("No products specified in the order.");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error("User not found");
   }
 
   let totalPrice = 0;
@@ -55,7 +64,22 @@ const createOrder = async (orderDetails: IOrder) => {
     totalPrice,
   });
 
-  return order;
+  //payment integration
+  const surjopayPayload = {
+    amount: totalPrice,
+    order_id: order._id,
+    currency: "BDT",
+    customer_name: user.name,
+    customer_address: user.address || "N/A",
+    customer_email: user.email,
+    customer_phone: user.phone || "N/A",
+    customer_city: user.city || "N/A",
+    client_ip
+  }
+
+  const payment =  await  orderUtils.makePaymentAsync(surjopayPayload);
+
+  return {order, payment};
 };
 //calculate revenue
 const calculateRevenue = async () => {

@@ -3,10 +3,11 @@ import { IUser } from './user.interface';
 import { hashPassword, comparePassword } from './user.utils';
 
  const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
-  const { name, email, password } = data;
+  const { name, email, password, phone, address, city} = data;
+
   const hashedPassword = await hashPassword(password!);
 
-  const user = new User({ name, email, password: hashedPassword });
+  const user = new User({ name, email, password: hashedPassword, phone, address, city });
   return await user.save();
 };
 

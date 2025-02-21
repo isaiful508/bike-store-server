@@ -12,11 +12,13 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
       product: new mongoose.Types.ObjectId(item.product),
       quantity: item.quantity,
     }));
+    const client_ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.socket.remoteAddress;
 
     const result = await OrderServices.createOrder({
       user: validatedOrder.user,
       products: productDetails,
-    });
+    },
+    client_ip);
 
     res.status(201).json({
       message: "Order created successfully",
@@ -48,5 +50,6 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
 export const OrderControllers = {
     createOrder,
-    totalRevenue
+    totalRevenue,
+    
 }
