@@ -8,10 +8,14 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validatedOrder = orderValidationSchema.parse(req.body.data);
 
-    const productObjectId = new mongoose.Types.ObjectId(validatedOrder.product);
+    const productDetails = validatedOrder.products.map((item) => ({
+      product: new mongoose.Types.ObjectId(item.product),
+      quantity: item.quantity,
+    }));
+
     const result = await OrderServices.createOrder({
-      ...validatedOrder,
-      product: productObjectId,
+      user: validatedOrder.user,
+      products: productDetails,
     });
 
     res.status(201).json({
@@ -22,8 +26,8 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(error);
   }
-  };
-  
+};
+
   // Get Total Revenue
   const totalRevenue = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
-
+    console.log('Connected to mongodb database');
   
     app.listen(config.port, () => {
         // eslint-disable-next-line

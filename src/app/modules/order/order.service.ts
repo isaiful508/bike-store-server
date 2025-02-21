@@ -1,41 +1,62 @@
 import ProductModel from "../product/product.model";
-import { Order } from "./order.interface";
+import { IOrder } from "./order.interface";
 import OrderModel from './order.model';
 
 
-const createOrder = async (orderDetails: Order) => {
+const createOrder = async (orderDetails: IOrder) => {
+  const { user , products } = orderDetails;
 
-  const { email, product, quantity, totalPrice } = orderDetails;
-
-  // Fetch the product
-  const productData = await ProductModel.findById(product);
-  if (!productData) {
-    throw new Error('Product not found');
+  if (!products || !products.length) {
+    throw new Error("No products specified in the order.");
   }
 
-  // Check stock
-  if (productData.quantity < quantity) {
-    throw new Error('Insufficient stock available');
-  }
+  let totalPrice = 0;
 
-  // Reduce stock and update inStock status
-  productData.quantity -= quantity;
-  if (productData.quantity === 0) {
-    productData.inStock = false;
-  }
-  await productData.save();
+  const productDetails = await Promise.all(
+    products.map(async (item) => {
+      const productData = await ProductModel.findById(item.product);
+      if (!productData) {
+        throw new Error(`Product not found: ${item.product}`);
+      }
+
+      if (productData.quantity < item.quantity) {
+        throw new Error(`Insufficient stock for ${productData.name}`);
+      }
+
+      const subtotal = productData.price * item.quantity;
+      totalPrice += subtotal;
+
+      return {
+        product: productData._id,
+        quantity: item.quantity,
+        price: productData.price,
+        subtotal,
+      };
+    })
+  );
+
+  await Promise.all(
+    products.map(async (item) => {
+      const productData = await ProductModel.findById(item.product);
+      if (productData) {
+        productData.quantity -= item.quantity;
+        if (productData.quantity === 0) {
+          productData.inStock = false;
+        }
+        await productData.save();
+      }
+    })
+  );
 
   // Create the order
   const order = await OrderModel.create({
-    email,
-    product,
-    quantity,
+    user,
+    products: productDetails,
     totalPrice,
   });
 
   return order;
-}
-
+};
 //calculate revenue
 const calculateRevenue = async () => {
   try {

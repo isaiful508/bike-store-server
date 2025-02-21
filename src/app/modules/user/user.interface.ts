@@ -4,6 +4,9 @@ export type IUser {
     email: string;
     password: string;
     role: "customer" | "admin";
+    phone?: string;
+    address?: string;
+    city?: string;
     createdAt?: Date;
     updatedAt?: Date;
   }
