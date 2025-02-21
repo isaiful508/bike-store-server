@@ -1,4 +1,4 @@
-import Shurjopay from "shurjopay";
+import Shurjopay, { PaymentResponse, VerificationResponse } from "shurjopay";
 import config from "../../config";
 
 const shurjopay = new Shurjopay();
@@ -23,7 +23,19 @@ shurjopay.config(
     });
   }
 
+  const verifyPaymentAsync = (
+    order_id: string
+  ): Promise<VerificationResponse[]> => {
+    return new Promise((resolve, reject) => {
+      shurjopay.verifyPayment(
+        order_id,
+        (response) => resolve(response),
+        (error) => reject(error)
+      );
+    });
+  };
 
 export const orderUtils = {
-  makePaymentAsync
+  makePaymentAsync,
+  verifyPaymentAsync
 };
