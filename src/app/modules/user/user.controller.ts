@@ -41,6 +41,9 @@ export const loginUser = catchAsync(async (req, res) => {
     email : user.email,
     name : user.name,
     role: user.role,
+    phone : user.phone,
+    address : user.address,
+    city : user.city,
   }, JWT_SECRET, { expiresIn: '24h' });
 
   sendResponse(res, {

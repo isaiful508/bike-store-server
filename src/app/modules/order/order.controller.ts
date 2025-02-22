@@ -59,9 +59,21 @@ const verifyPayment = catchAsync(async (req, res) => {
   });
 });
 
+//get all orders
+const getAllOrders = catchAsync(async (req, res) => {
+  const order = await OrderServices.getAllOrders();
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Orders retrieved successfully',
+    data: order,
+  });
+});
 
 export const OrderControllers = {
   createOrder,
   totalRevenue,
   verifyPayment,
+  getAllOrders,
 }
