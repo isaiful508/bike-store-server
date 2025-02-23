@@ -12,6 +12,7 @@ shurjopay.config(
   );
 
   const makePaymentAsync = async (
+    // eslint-disable-next-line
     paymentPayload: any
   ): Promise<PaymentResponse> => {
     return new Promise((resolve, reject) => {

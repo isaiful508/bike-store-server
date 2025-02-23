@@ -80,6 +80,7 @@ const createOrder = async (orderDetails: IOrder, client_ip: string) => {
   const payment =  await  orderUtils.makePaymentAsync(surjopayPayload);
 
   if (payment?.transactionStatus) {
+    //@ts-ignore
    order = await OrderModel.updateOne({
       transaction: {
         id: payment.sp_order_id,

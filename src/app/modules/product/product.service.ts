@@ -16,6 +16,7 @@ const getAllProducts = async ( { searchTerm, minPrice, maxPrice, brand, category
     category?: string;
     inStock?: boolean;
 } ) => {
+    // eslint-disable-next-line
     let query: any = {};
    
     if (searchTerm) {

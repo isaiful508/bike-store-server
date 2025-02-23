@@ -17,7 +17,9 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     }));
     const client_ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.socket.remoteAddress;
 
+     //@ts-ignore
     const result = await OrderServices.createOrder({
+     
       user: validatedOrder.user,
       products: productDetails,
     },

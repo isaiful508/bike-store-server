@@ -1,7 +1,7 @@
 import type { Document, Types } from "mongoose";
-
+ //@ts-ignore
 export type IOrder = Document & {
-  user: Types.ObjectId;
+  user: Types.ObjectId | string;
   products: {
     product: Types.ObjectId;
     quantity: number;

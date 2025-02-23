@@ -35,7 +35,7 @@ export const loginUser = catchAsync(async (req, res) => {
     };
   }
 
-  // @ts-ignore
+
   const token = jwt.sign({ 
     id: user._id,
     email : user.email,
