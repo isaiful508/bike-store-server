@@ -67,9 +67,23 @@ const getAllUsers = catchAsync(async (req, res) => {
 })
 
 
+export const toggleUserStatus = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { isActive } = req.body;
+
+  await UserServices.toggleUserStatus(userId, isActive);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: `User ${isActive ? "activated" : "deactivated"} successfully`,
+  });
+});
+
 
 export const UserControllers = {
   registerUser,
   loginUser,
   getAllUsers,
+  toggleUserStatus,
 };

@@ -6,6 +6,7 @@ export type IUser = {
     email: string;
     password: string;
     role: "customer" | "admin";
+    isActive?: boolean;
     phone?: string;
     address?: string;
     city?: string;

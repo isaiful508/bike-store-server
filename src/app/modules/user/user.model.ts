@@ -7,6 +7,7 @@ const userSchema = new Schema<IUser>(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         role: { type: String, enum: ["admin", "customer"], default: "customer" },
+        isActive: { type: Boolean, default: true },
         phone: { type: String, required: false },
         address: { type: String, required: false },
         city: { type: String, required: false },

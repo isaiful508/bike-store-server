@@ -18,5 +18,6 @@ router.post(
     router.get('/users',
         UserControllers.getAllUsers);
 
+        router.put('/user/:userId', UserControllers.toggleUserStatus);
 
 export const UserRoutes = router;
