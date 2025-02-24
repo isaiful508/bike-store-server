@@ -15,6 +15,8 @@ router.post(
     router.post('/auth/login',
         validateRequest(loginValidationSchema),
         UserControllers.loginUser);
+    router.get('/users',
+        UserControllers.getAllUsers);
 
 
 export const UserRoutes = router;

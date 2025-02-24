@@ -55,11 +55,21 @@ export const loginUser = catchAsync(async (req, res) => {
 });
 
 
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUsers()
 
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Users retrieved successfully',
+    data: result,
+  });
+})
 
 
 
 export const UserControllers = {
   registerUser,
   loginUser,
+  getAllUsers,
 };

@@ -19,9 +19,13 @@ export const loginUser = async (email: string, password: string): Promise<IUser 
   return user;
 };
 
-
+const getAllUsers = async () => {
+  const result = await User.find()
+  return result
+}
 
 export const UserServices = {
   registerUserIntoDB,
   loginUser,
+ getAllUsers,
 }
