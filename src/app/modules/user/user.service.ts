@@ -4,8 +4,8 @@ import { hashPassword, comparePassword } from './user.utils';
 import { StatusCodes } from 'http-status-codes';
 import { Types } from 'mongoose';
 
- const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
-  const { name, email, password, phone, address, city} = data;
+const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
+  const { name, email, password, phone, address, city } = data;
 
   const hashedPassword = await hashPassword(password!);
 
@@ -34,28 +34,6 @@ const getAllUsers = async () => {
   return result
 }
 
-// export const deactivateUser = async (userId: string) => {
-
-
-//   if (!Types.ObjectId.isValid(userId)) {
-//     throw new Error('Invalid user ID');
-//   }
-
-//   const user = await User.findById(userId);
-
-
-//   if (!user) {
-//     throw {
-//           statusCode: StatusCodes.UNAUTHORIZED,
-//           message: "User not found",
-//           error: { details: "User did not match" },
-//         };
-//   }
-
-//   user.isActive = false;
-//   await user.save();
-// };
-
 export const toggleUserStatus = async (userId: string, isActive: boolean) => {
   if (!Types.ObjectId.isValid(userId)) {
     throw new Error("Invalid user ID");
@@ -70,15 +48,24 @@ export const toggleUserStatus = async (userId: string, isActive: boolean) => {
     };
   }
 
-  user.isActive = isActive; // Update status dynamically
+  user.isActive = isActive;
   await user.save();
+};
+
+const updateUser = async (id: string, data: IUser) => {
+  const result = await User.findByIdAndUpdate(id, data, {
+    new: true, 
+    runValidators: true,  // Ensures validation rules are applied
+  });
+
+  return result;
 };
 
 
 export const UserServices = {
   registerUserIntoDB,
   loginUser,
- getAllUsers,
-  // deactivateUser
-  toggleUserStatus
+  getAllUsers,
+  toggleUserStatus,
+  updateUser
 }
