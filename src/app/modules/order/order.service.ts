@@ -148,7 +148,6 @@ const verifyPayment = async (order_id: string) => {
   return verifiedPayment;
 };
 
-
 export const OrderServices = {
   createOrder,
   calculateRevenue,

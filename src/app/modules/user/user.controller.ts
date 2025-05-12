@@ -82,40 +82,18 @@ export const toggleUserStatus = catchAsync(async (req, res) => {
   });
 });
 
-
-// const updateUser = catchAsync(async (req, res) => {
-//   const userId = req.params.userId;
-//   const body = req.body;
-
-//   if (body.password) {
-//     const hashedPassword = await hashPassword(body.password); 
-//     body.password = hashedPassword;
-//   }
-
-//   const result = await UserServices.updateUser(userId, body);
-//   console.log({result});
-
-//   sendResponse(res, {
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     message: 'User updated successfully',
-//     data: result,
-//   });
-// });
-
-
 const updateUser = catchAsync(async (req, res) => {
   const userId = req.params.userId;
   const { oldPassword, password, ...updateFields } = req.body;
-
-  // const user = await User.findById(userId);
-  // if (!user) {
-  //   throw {
-  //     statusCode: StatusCodes.NOT_FOUND,
-  //     message: "User not found",
-  //     error: { details: "No user exists with this ID" },
-  //   };
-  // }
+//@ts-ignore
+  const user = await User.findById(userId);
+  if (!user) {
+    throw {
+      statusCode: StatusCodes.NOT_FOUND,
+      message: "User not found",
+      error: { details: "No user exists with this ID" },
+    };
+  }
 
   // If the request contains a new password, verify the old password first
   if (password) {
